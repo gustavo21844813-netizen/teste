@@ -1,0 +1,597 @@
+:root {
+    --bg-page: #0f172a;
+    --phone-bg: #1e293b;
+    --card-bg: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-pink: #f43f5e;
+    --accent-green: #4ade80;
+    --border-color: #475569;
+    --radius: 16px;
+    --font: system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Tema Neon */
+  body.theme-neon {
+    --bg-page: #050505;
+    --phone-bg: #0d0d0d;
+    --card-bg: #1a1a1a;
+    --text-main: #ffffff;
+    --text-muted: #a3e635;
+    --accent: #a3e635;
+    --accent-pink: #ec4899;
+    --accent-green: #22c55e;
+    --border-color: #333333;
+  }
+  
+  /* Tema Alto Contraste */
+  body.theme-contrast {
+    --bg-page: #000000;
+    --phone-bg: #000000;
+    --card-bg: #121212;
+    --text-main: #ffffff;
+    --text-muted: #ffff00;
+    --accent: #ffff00;
+    --accent-pink: #00ffff;
+    --accent-green: #00ff00;
+    --border-color: #ffffff;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: var(--font);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .app-wrapper {
+    width: 100%;
+    max-width: 380px;
+  }
+  
+  .phone-frame {
+    background-color: var(--phone-bg);
+    border-radius: 36px;
+    border: 4px solid var(--border-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 680px;
+  }
+  
+  .phone-header {
+    padding: 16px 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .brand-icon {
+    font-size: 1.6rem;
+    color: var(--accent);
+  }
+  
+  .brand-name {
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  
+  .theme-select {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .screen-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  
+  .tab-pane {
+    display: none;
+  }
+  
+  .tab-pane.active {
+    display: block;
+  }
+  
+  .user-welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .user-welcome h2 {
+    font-size: 1.1rem;
+  }
+  
+  .user-welcome p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  
+  .points-badge {
+    background: var(--accent);
+    color: #0f172a;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+  }
+  
+  /* Barra de Progresso */
+  .progress-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px 12px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+  
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: var(--phone-bg);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-green);
+    transition: width 0.3s ease;
+  }
+  
+  /* Botão Mochila Rápida */
+  .quick-backpack-btn {
+    width: 100%;
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px dashed var(--accent);
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .add-task-box {
+    background: var(--card-bg);
+    padding: 12px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .add-task-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    padding: 4px 0;
+    outline: none;
+  }
+  
+  .btn-voice {
+    background: var(--phone-bg);
+    color: var(--accent);
+    border: 1px solid var(--border-color);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+  
+  .btn-voice.listening {
+    background: var(--accent-pink);
+    color: #fff;
+    animation: pulse 1s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  .add-task-controls {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .add-task-controls select {
+    flex: 1;
+    background: var(--phone-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 6px;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.8rem;
+  }
+  
+  .btn-add {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  
+  .chip {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .chip.active {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .task-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--accent);
+    padding: 10px 12px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .task-card.categoria-prova { border-left-color: var(--accent-pink); }
+  .task-card.categoria-skate { border-left-color: var(--accent-green); }
+  
+  .task-card.completed {
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+  
+  .task-main-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .task-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+  
+  .task-details strong {
+    display: block;
+    font-size: 0.9rem;
+  }
+  
+  .task-details span {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: capitalize;
+  }
+  
+  .audio-speak-btn {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Modo Foco */
+  .foco-container {
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .foco-subtitle {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  
+  .timer-display {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 25px 0;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+  
+  .timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  
+  .btn-timer {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+  }
+  
+  .btn-timer.primary {
+    background: var(--accent);
+    color: #0f172a;
+  }
+  
+  .btn-timer.secondary {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+  }
+  
+  .foco-tips {
+    background: var(--card-bg);
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+  }
+  
+  /* Conquistas */
+  .achievements-container h3 {
+    margin-bottom: 12px;
+  }
+  
+  .profile-summary {
+    background: var(--card-bg);
+    padding: 14px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+  }
+  
+  .level-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    margin: 0 auto 6px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .level-circle span {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+  }
+  
+  .level-circle strong {
+    font-size: 1.2rem;
+    color: var(--accent);
+  }
+  
+  .badge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .badge-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .badge-card.locked {
+    opacity: 0.4;
+  }
+  
+  .badge-icon {
+    font-size: 1.5rem;
+    color: var(--accent);
+  }
+  
+  .badge-card strong {
+    display: block;
+    font-size: 0.85rem;
+  }
+  
+  .badge-card p {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  
+  /* Modal Mochila Rápida */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    padding: 20px;
+  }
+  
+  .modal-card {
+    background: var(--phone-bg);
+    border: 2px solid var(--accent);
+    padding: 20px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .modal-card h3 {
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+  }
+  
+  .modal-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  
+  .modal-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+  }
+  
+  .modal-items label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  
+  .btn-close-modal {
+    width: 100%;
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Navegação Inferior */
+  .phone-nav {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-top: 1px solid var(--border-color);
+    padding: 6px 0;
+  }
+  
+  .nav-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  
+  .nav-btn i {
+    font-size: 1.2rem;
+  }
+  
+  .nav-btn.active {
+    color: var(--accent);
+    font-weight: bold;
+  }

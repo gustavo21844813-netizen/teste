@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusSkate App</title>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    :root {
+      --bg-page: #0f172a;
+      --phone-bg: #1e293b;
+      --card-bg: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-pink: #f43f5e;
+      --accent-green: #4ade80;
+      --border-color: #475569;
+      --radius: 16px;
+      --font: system-ui, -apple-system, sans-serif;
+    }
+
+    body.theme-neon {
+      --bg-page: #050505;
+      --phone-bg: #0d0d0d;
+      --card-bg: #1a1a1a;
+      --text-main: #ffffff;
+      --text-muted: #a3e635;
+      --accent: #a3e635;
+      --accent-pink: #ec4899;
+      --accent-green: #22c55e;
+      --border-color: #333333;
+    }
+
+    body.theme-contrast {
+      --bg-page: #000000;
+      --phone-bg: #000000;
+      --card-bg: #121212;
+      --text-main: #ffffff;
+      --text-muted: #ffff00;
+      --accent: #ffff00;
+      --accent-pink: #00ffff;
+      --accent-green: #00ff00;
+      --border-color: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .app-wrapper { width: 100%; max-width: 380px; }
+
+    .phone-frame {
+      background-color: var(--phone-bg);
+      border-radius: 36px;
+      border: 4px solid var(--border-color);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 700px;
+    }
+
+    .phone-header {
+      padding: 16px 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand-icon { font-size: 1.6rem; color: var(--accent); }
+    .brand-name { font-weight: 800; font-size: 1.1rem; }
+
+    .theme-select {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .screen-content { flex: 1; overflow-y: auto; padding: 16px; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .user-welcome {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .user-welcome h2 { font-size: 1.1rem; }
+    .user-welcome p { font-size: 0.8rem; color: var(--text-muted); }
+
+    .points-badge {
+      background: var(--accent);
+      color: #0f172a;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .progress-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--phone-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--accent-green);
+      transition: width 0.3s ease;
+    }
+
+    .quick-backpack-btn {
+      width: 100%;
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px dashed var(--accent);
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .add-task-box {
+      background: var(--card-bg);
+      padding: 12px;
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .add-task-box input[type="text"] {
+      flex: 1;
+      background: var(--phone-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      padding: 8px;
+      outline: none;
+    }
+
+    .btn-icon-action {
+      background: var(--phone-bg);
+      color: var(--accent);
+      border: 1px solid var(--border-color);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .btn-icon-action.recording {
+      background: var(--accent-pink);
+      color: #fff;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    .add-task-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-task-controls select, .add-task-controls input[type="time"] {
+      background: var(--phone-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      border-radius: 8px;
+      outline: none;
+      font-size: 0.8rem;
+    }
+
+    .btn-add-main {
+      flex: 1;
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .chip {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .chip.active {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-card.categoria-prova { border-left-color: var(--accent-pink); }
+    .task-card.categoria-skate { border-left-color: var(--accent-green); }
+
+    .task-card.completed {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+
+    .task-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .task-main-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .task-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .task-details strong { display: block; font-size: 0.9rem; }
+    .task-details span { font-size: 0.7rem; color: var(--text-muted); text-transform: capitalize; }
+
+    .task-actions-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .action-btn-sm {
+      background: var(--phone-bg);
+      color: var(--accent);
+      border: 1px solid var(--border-color);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-btn-sm.delete-btn { color: var(--accent-pink); }
+
+    .task-attachment-preview img {
+      max-width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 4px;
+    }
+
+    /* Modo Foco */
+    .foco-container { text-align: center; padding: 10px; }
+    .foco-subtitle { color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; }
+    .timer-display {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 25px 0;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+
+    .timer-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 25px; }
+
+    .btn-timer {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+    }
+
+    .btn-timer.primary { background: var(--accent); color: #0f172a; }
+    .btn-timer.secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); }
+
+    /* Estilos do Perfil de Conquistas & Loja de Recompensas */
+    .profile-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .level-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #0f172a;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+
+    .xp-bar-container {
+      margin-top: 10px;
+    }
+
+    .xp-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      margin: 14px 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .badge-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-card.locked { opacity: 0.4; }
+    .badge-icon { font-size: 1.5rem; color: var(--accent); }
+    .badge-info strong { display: block; font-size: 0.85rem; }
+    .badge-info p { font-size: 0.7rem; color: var(--text-muted); }
+
+    .rewards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .reward-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reward-info strong { display: block; font-size: 0.85rem; }
+    .reward-info span { font-size: 0.75rem; color: var(--accent); font-weight: bold; }
+
+    .btn-claim {
+      background: var(--accent-green);
+      color: #0f172a;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    /* Modal Mochila */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 99;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: var(--phone-bg);
+      border: 2px solid var(--accent);
+      padding: 20px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .modal-card h3 { margin-bottom: 6px; font-size: 1.1rem; }
+    .modal-card p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px; }
+
+    .modal-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+
+    .modal-items label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+    .btn-close-modal {
+      width: 100%;
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .phone-nav {
+      display: flex;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-top: 1px solid var(--border-color);
+      padding: 6px 0;
+    }
+
+    .nav-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .nav-btn i { font-size: 1.2rem; }
+    .nav-btn.active { color: var(--accent); font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <main class="app-wrapper">
+    <div class="phone-frame">
+      <header class="phone-header">
+        <div class="brand">
+          <i class="ph-bold ph-skateboard brand-icon"></i>
+          <span class="brand-name">FocusSkate</span>
+        </div>
+        <select id="themeSelect" class="theme-select">
+          <option value="default">🛹 Urbano</option>
+          <option value="neon">⚡ Neon</option>
+          <option value="contrast">👁️ Contraste</option>
+        </select>
+      </header>
+
+      <div class="screen-content">
+        <!-- ABA TAREFAS -->
+        <section id="tab-tasks" class="tab-pane active">
+          <div class="user-welcome">
+            <div>
+              <h2>Fala, Gabriel! 🛹</h2>
+              <p>Suas tarefas do dia</p>
+            </div>
+            <span class="points-badge" id="pointsDisplay">120 pts</span>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-info">
+              <span>Progresso de Hoje</span>
+              <span id="progressText">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+          </div>
+
+          <button class="quick-backpack-btn" onclick="openBackpackModal()">
+            <i class="ph-bold ph-backpack"></i> Checklist Rápido da Mochila
+          </button>
+
+          <div class="add-task-box">
+            <div class="input-row">
+              <input type="text" id="newTaskInput" placeholder="Ex: Trabalho de Geografia..." maxlength="50">
+              <button id="btnVoiceRecord" class="btn-icon-action" title="Ditar tarefa">
+                <i class="ph-bold ph-microphone"></i>
+              </button>
+              <label class="btn-icon-action" title="Anexar foto">
+                <i class="ph-bold ph-camera"></i>
+                <input type="file" id="filePhotoInput" accept="image/*" style="display: none;">
+              </label>
+            </div>
+
+            <div class="add-task-controls">
+              <select id="taskCategorySelect">
+                <option value="mochila">🎒 Mochila</option>
+                <option value="prova">📝 Prova</option>
+                <option value="skate">🛹 Skate</option>
+                <option value="geral">📌 Geral</option>
+              </select>
+              <input type="time" id="taskTimeInput">
+              <button id="btnAddTask" class="btn-add-main">
+                <i class="ph-bold ph-plus-circle"></i> Add
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-chips">
+            <button class="chip active" onclick="filterTasks('todas', this)">Todas</button>
+            <button class="chip" onclick="filterTasks('mochila', this)">Mochila</button>
+            <button class="chip" onclick="filterTasks('prova', this)">Provas</button>
+            <button class="chip" onclick="filterTasks('skate', this)">Skate</button>
+          </div>
+
+          <div class="task-list" id="taskList"></div>
+        </section>
+
+        <!-- ABA FOCO -->
+        <section id="tab-foco" class="tab-pane">
+          <div class="foco-container">
+            <h3><i class="ph-bold ph-lightning"></i> Modo Foco</h3>
+            <p class="foco-subtitle">Estude 15 min sem distrações para ganhar +30 pts.</p>
+            <div class="timer-display" id="timerDisplay">15:00</div>
+            <div class="timer-controls">
+              <button id="btnStartTimer" class="btn-timer primary">
+                <i class="ph-bold ph-play" id="playIcon"></i> <span id="timerBtnText">Iniciar</span>
+              </button>
+              <button id="btnResetTimer" class="btn-timer secondary">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABA CONQUISTAS & RESGATE DE PONTOS -->
+        <section id="tab-achievements" class="tab-pane">
+          <div class="profile-card">
+            <span class="level-badge" id="levelTitle">Nível 2 • Skatista Focado</span>
+            <h2 style="font-size: 1.4rem;" id="totalPointsText">120 Pontos</h2>
+            <div class="xp-bar-container">
+              <div class="xp-info">
+                <span>Progresso para Nível 3</span>
+                <span id="xpText">120 / 200 XP</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="xpBarFill" style="width: 60%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title"><i class="ph-bold ph-gift" style="color: var(--accent);"></i> Resgatar Recompensas</div>
+          <div class="rewards-list">
+            <div class="reward-card">
+              <div class="reward-info">
+                <strong>+30 Minutos de Skate / Lazer</strong>
+                <span>50 pts</span>
+              </div>
+              <button class="btn-claim" onclick="claimReward(50, '+30 Minutos de Skate')">Resgatar</button>
+            </div>
+            <div class="reward-card">
+              <div class="reward-info">
+                <strong>Escolher o Jantar de Hoje</strong>
+                <span>100 pts</span>
+              </div>
+              <button class="btn-claim" onclick="claimReward(100, 'Escolher o Jantar')">Resgatar</button>
+            </div>
+          </div>
+
+          <div class="section-title"><i class="ph-bold ph-trophy" style="color: var(--accent);"></i> Medalhas Conquistadas</div>
+          <div class="badge-grid">
+            <div class="badge-card">
+              <i class="ph-bold ph-check-circle badge-icon"></i>
+              <div class="badge-info">
+                <strong>Primeira Manobra</strong>
+                <p>Completou a 1ª tarefa no app</p>
+              </div>
+            </div>
+            <div class="badge-card">
+              <i class="ph-bold ph-backpack badge-icon"></i>
+              <div class="badge-info">
+                <strong>Mochila em Dia</strong>
+                <p>Verificou materiais da escola</p>
+              </div>
+            </div>
+            <div class="badge-card locked" id="badgeFocusMaster">
+              <i class="ph-bold ph-fire badge-icon"></i>
+              <div class="badge-info">
+                <strong>Mestre do Foco</strong>
+                <p>Complete 1 sessão no Modo Foco</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <nav class="phone-nav">
+        <button class="nav-btn active" onclick="switchTab('tab-tasks', this)">
+          <i class="ph-bold ph-check-square"></i>
+          <span>Tarefas</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('tab-foco', this)">
+          <i class="ph-bold ph-timer"></i>
+          <span>Foco</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('tab-achievements', this)">
+          <i class="ph-bold ph-trophy"></i>
+          <span>Prêmios</span>
+        </button>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Modal Mochila -->
+  <div class="modal-overlay" id="backpackModal">
+    <div class="modal-card">
+      <h3>🎒 Mochila do Dia</h3>
+      <p>Marque o que já guardou:</p>
+      <div class="modal-items">
+        <label><input type="checkbox"> Caderno de História</label>
+        <label><input type="checkbox"> Estojo completo</label>
+        <label><input type="checkbox"> Trabalho impresso</label>
+        <label><input type="checkbox"> Garrafa d'água</label>
+      </div>
+      <button class="btn-close-modal" onclick="closeBackpackModal()">Tudo Pronto!</button>
+    </div>
+  </div>
+
+  <script>
+    let tasks = [
+      { id: 1, text: "Trazer trabalho de Geografia", category: "mochila", time: "07:30", completed: false, photo: null },
+      { id: 2, text: "Estudar 15 min para Matemática", category: "prova", time: "14:00", completed: false, photo: null },
+      { id: 3, text: "Ajustar rolamento do skate", category: "skate", time: "", completed: true, photo: null }
+    ];
+
+    let points = 120;
+    let currentFilter = 'todas';
+    let currentPhotoData = null;
+
+    const taskListEl = document.getElementById('taskList');
+    const newTaskInput = document.getElementById('newTaskInput');
+    const categorySelect = document.getElementById('taskCategorySelect');
+    const taskTimeInput = document.getElementById('taskTimeInput');
+    const btnAddTask = document.getElementById('btnAddTask');
+    const pointsDisplay = document.getElementById('pointsDisplay');
+    const totalPointsText = document.getElementById('totalPointsText');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const progressText = document.getElementById('progressText');
+    const xpBarFill = document.getElementById('xpBarFill');
+    const xpText = document.getElementById('xpText');
+    const filePhotoInput = document.getElementById('filePhotoInput');
+
+    function updatePointsUI() {
+      pointsDisplay.textContent = `${points} pts`;
+      totalPointsText.textContent = `${points} Pontos`;
+      
+      // XP / Nível
+      let targetXP = 200;
+      let pct = Math.min(Math.round((points / targetXP) * 100), 100);
+      xpBarFill.style.width = `${pct}%`;
+      xpText.textContent = `${points} / ${targetXP} XP`;
+
+      if (points >= 200) {
+        document.getElementById('levelTitle').textContent = "Nível 3 • Mestre das Manobras 🛹";
+      }
+    }
+
+    function renderTasks() {
+      taskListEl.innerHTML = '';
+      const filtered = tasks.filter(t => currentFilter === 'todas' || t.category === currentFilter);
+
+      if (filtered.length === 0) {
+        taskListEl.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 16px 0; font-size: 0.85rem;">Nenhuma tarefa encontrada!</p>';
+      } else {
+        filtered.forEach(task => {
+          const card = document.createElement('div');
+          card.className = `task-card categoria-${task.category} ${task.completed ? 'completed' : ''}`;
+          
+          let photoHTML = task.photo ? `<div class="task-attachment-preview"><img src="${task.photo}"></div>` : '';
+          let timeHTML = task.time ? ` ⏰ ${task.time}` : '';
+
+          card.innerHTML = `
+            <div class="task-top-row">
+              <div class="task-main-info">
+                <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                <div class="task-details">
+                  <strong>${task.text}</strong>
+                  <span>${task.category}${timeHTML}</span>
+                </div>
+              </div>
+              <div class="task-actions-group">
+                <button class="action-btn-sm" onclick="speakText('${task.text}')" title="Ouvir">
+                  <i class="ph-bold ph-speaker-high"></i>
+                </button>
+                <button class="action-btn-sm delete-btn" onclick="deleteTask(${task.id})" title="Excluir">
+                  <i class="ph-bold ph-trash"></i>
+                </button>
+              </div>
+            </div>
+            ${photoHTML}
+          `;
+          taskListEl.appendChild(card);
+        });
+      }
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      if (tasks.length === 0) {
+        progressBarFill.style.width = '0%';
+        progressText.textContent = '0%';
+        return;
+      }
+      const completed = tasks.filter(t => t.completed).length;
+      const pct = Math.round((completed / tasks.length) * 100);
+      progressBarFill.style.width = `${pct}%`;
+      progressText.textContent = `${pct}%`;
+    }
+
+    function addNewTask() {
+      const text = newTaskInput.value.trim();
+      if (!text) {
+        alert('Digite o nome da tarefa!');
+        return;
+      }
+
+      const newTask = {
+        id: Date.now(),
+        text: text,
+        category: categorySelect.value,
+        time: taskTimeInput.value,
+        completed: false,
+        photo: currentPhotoData
+      };
+
+      tasks.unshift(newTask);
+      newTaskInput.value = '';
+      taskTimeInput.value = '';
+      currentPhotoData = null;
+      renderTasks();
+    }
+
+    btnAddTask.addEventListener('click', addNewTask);
+    newTaskInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNewTask(); });
+
+    filePhotoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          currentPhotoData = event.target.result;
+          alert('Foto anexada!');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      renderTasks();
+    }
+
+    function toggleTask(id) {
+      tasks = tasks.map(t => {
+        if (t.id === id) {
+          const status = !t.completed;
+          if (status) {
+            points += 10;
+            updatePointsUI();
+          }
+          return { ...t, completed: status };
+        }
+        return t;
+      });
+      renderTasks();
+    }
+
+    function claimReward(cost, title) {
+      if (points >= cost) {
+        points -= cost;
+        updatePointsUI();
+        speakText(`Parabéns! Você resgatou: ${title}`);
+        alert(`🎉 Recompensa Resgatada!\nExiba esta tela para os seus pais para usar: ${title}`);
+      } else {
+        alert(`Pontos insuficientes! Faltam ${cost - points} pts.`);
+      }
+    }
+
+    function filterTasks(cat, btn) {
+      currentFilter = cat;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      renderTasks();
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'pt-BR';
+        window.speechSynthesis.speak(utt);
+      }
+    }
+
+    const btnVoiceRecord = document.getElementById('btnVoiceRecord');
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new SpeechRecognition();
+      rec.lang = 'pt-BR';
+
+      btnVoiceRecord.addEventListener('click', () => {
+        rec.start();
+        btnVoiceRecord.classList.add('recording');
+      });
+
+      rec.onresult = (e) => {
+        newTaskInput.value = e.results[0][0].transcript;
+        btnVoiceRecord.classList.remove('recording');
+      };
+      rec.onerror = () => btnVoiceRecord.classList.remove('recording');
+    }
+
+    document.getElementById('themeSelect').addEventListener('change', (e) => {
+      document.body.className = '';
+      if (e.target.value === 'neon') document.body.classList.add('theme-neon');
+      if (e.target.value === 'contrast') document.body.classList.add('theme-contrast');
+    });
+
+    function openBackpackModal() { document.getElementById('backpackModal').style.display = 'flex'; }
+    function closeBackpackModal() { document.getElementById('backpackModal').style.display = 'none'; }
+
+    // Cronômetro Modo Foco
+    let timerSeconds = 15 * 60;
+    let timerInterval = null;
+    let isRunning = false;
+
+    const timerDisplay = document.getElementById('timerDisplay');
+    const btnStartTimer = document.getElementById('btnStartTimer');
+    const btnResetTimer = document.getElementById('btnResetTimer');
+
+    btnStartTimer.addEventListener('click', () => {
+      if (isRunning) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        document.getElementById('timerBtnText').textContent = 'Continuar';
+      } else {
+        isRunning = true;
+        document.getElementById('timerBtnText').textContent = 'Pausar';
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(timerInterval);
+            isRunning = false;
+            points += 30;
+            updatePointsUI();
+            document.getElementById('badgeFocusMaster').classList.remove('locked');
+            speakText('Fim da sessão de foco! Você ganhou mais 30 pontos!');
+            alert('🎉 Sessão Concluída!\nVocê ganhou +30 Pontos e desbloqueou a medalha Mestre do Foco!');
+          }
+        }, 1000);
+      }
+    });
+
+    btnResetTimer.addEventListener('click', () => {
+      clearInterval(timerInterval);
+      isRunning = false;
+      timerSeconds = 15 * 60;
+      timerDisplay.textContent = "15:00";
+      document.getElementById('timerBtnText').textContent = 'Iniciar';
+    });
+
+    renderTasks();
+    updatePointsUI();
+  </script>
+</body>
+</html>
